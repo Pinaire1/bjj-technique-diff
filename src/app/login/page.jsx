@@ -1,50 +1,52 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSupabase } from "../../components/SupabaseProvider";
+import { useAuth } from "../../context/AuthContext";
 
 export default function LoginPage() {
-  const supabase = useSupabaseClient();
+  const { supabase } = useSupabase();
+  const { setUser } = useAuth(); // if your AuthContext exposes a setter
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  async function handleMagicLink(e) {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    setLoading(false);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
     if (error) {
-      alert(error.message);
+      setError(error.message);
     } else {
-      alert('Magic link sent. Check your email.');
-      // Keep user on login or optionally redirect to dashboard
-      router.push('/dashboard');
+      setUser(data.user);
+      router.push("/dashboard");
     }
-  }
+  };
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>Sign in</h1>
-      <form onSubmit={handleMagicLink}>
-        <label>
-          Email
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ display: 'block', marginTop: 8, marginBottom: 12 }}
-          />
-        </label>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Sending...' : 'Send Magic Link'}
-        </button>
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Login</button>
       </form>
-      <p style={{ marginTop: 12 }}>
-        No account? <a href="/signup">Sign up</a>
-      </p>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
