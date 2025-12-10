@@ -10,6 +10,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useBelt } from "@/context/BeltContext";
 
 // Types
 interface Attendance {
@@ -77,6 +78,21 @@ export default function DashboardPage() {
         .select("*")
         .eq("user_id", user.id)
         .order("id", { ascending: false });
+
+        const { belt, level } = useBelt();
+
+<section style={{ marginTop: 20 }}>
+  <h2>Belt Level</h2>
+  {belt ? (
+    <p>
+      Current Belt: <strong>{belt.toUpperCase()}</strong>
+      {level > 0 && ` (Stripe ${level})`}
+    </p>
+  ) : (
+    <p>No belt assigned yet.</p>
+  )}
+</section>
+
 
       if (att) setAttendance(att);
       if (tech) setTechniques(tech);

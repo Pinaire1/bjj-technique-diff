@@ -1,6 +1,7 @@
 import "./globals.css";
 import  { SupabaseProvider }  from "../components/SupabaseProvider";
 import { AuthProvider } from "../context/AuthContext";
+import { BeltProvider } from "@/context/BeltContext";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +9,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <SupabaseProvider>
           <AuthProvider>
+            <BeltProvider>
             {children}
+            </BeltProvider>
           </AuthProvider>
         </SupabaseProvider>
       </body>

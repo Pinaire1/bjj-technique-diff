@@ -36,9 +36,29 @@ export default function Home() {
       <section className="space-y-3">
         <h1 className="text-4xl font-bold tracking-tight">
           Jiu-Jitsu{" "}
-          <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
-            Curriculum
-          </span>
+<span
+  className="bg-clip-text text-transparent font-bold"
+  style={{
+    backgroundImage: `linear-gradient(
+      to right,
+      #e5e7eb 0%,   /* White belt (gray for visibility) */
+      #e5e7eb 16.6%,
+      #3b82f6 16.6%, /* Blue belt */
+      #3b82f6 33.3%,
+      #8b5cf6 33.3%, /* Purple belt */
+      #8b5cf6 50%,
+      #b45309 50%,   /* Brown belt */
+      #b45309 66.6%,
+      #000000 66.6%, /* Black belt */
+      #000000 83.3%,
+      #dc2626 83.3%, /* Red belt */
+      #dc2626 100%
+    )`,
+  }}
+>
+  Curriculum
+</span>
+
         </h1>
         <p className="text-muted-foreground text-lg">
           Explore techniques, track your progress, and study smarter.
