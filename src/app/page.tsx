@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 // shadcn components
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Icons
-import { PlusCircle, ChevronRight } from "lucide-react";
+import { PlusCircle, ChevronRight, LogIn } from "lucide-react";
 
 interface Technique {
   id: string;
@@ -18,6 +19,8 @@ interface Technique {
 }
 
 export default function Home() {
+  const router = useRouter();
+
   const [techniques, setTechniques] = useState<Technique[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,34 +36,47 @@ export default function Home() {
   return (
     <div className="p-8 space-y-10 max-w-5xl mx-auto">
       {/* HERO */}
-      <section className="space-y-3">
-        <h1 className="text-4xl font-bold tracking-tight">
-          Jiu-Jitsu{" "}
-<span
-  className="bg-clip-text text-transparent font-bold"
-  style={{
-    backgroundImage: `linear-gradient(
-      to right,
-      #e5e7eb 0%,   /* White belt (gray for visibility) */
-      #e5e7eb 16.6%,
-      #3b82f6 16.6%, /* Blue belt */
-      #3b82f6 33.3%,
-      #8b5cf6 33.3%, /* Purple belt */
-      #8b5cf6 50%,
-      #b45309 50%,   /* Brown belt */
-      #b45309 66.6%,
-      #000000 66.6%, /* Black belt */
-      #000000 83.3%,
-      #dc2626 83.3%, /* Red belt */
-      #dc2626 100%
-    )`,
-  }}
->
-  Curriculum
-</span>
+      <section className="space-y-4">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <h1 className="text-4xl font-bold tracking-tight">
+            Jiu-Jitsu{" "}
+            <span
+              className="bg-clip-text text-transparent font-bold"
+              style={{
+                backgroundImage: `linear-gradient(
+                  to right,
+                  #e5e7eb 0%,
+                  #e5e7eb 16.6%,
+                  #3b82f6 16.6%,
+                  #3b82f6 33.3%,
+                  #8b5cf6 33.3%,
+                  #8b5cf6 50%,
+                  #b45309 50%,
+                  #b45309 66.6%,
+                  #000000 66.6%,
+                  #000000 83.3%,
+                  #dc2626 83.3%,
+                  #dc2626 100%
+                )`,
+              }}
+            >
+              Curriculum
+            </span>
+          </h1>
 
-        </h1>
-        <p className="text-muted-foreground text-lg">
+          {/* SIGN IN BUTTON */}
+          <Button
+            variant="outline"
+            onClick={() => router.push("/login")}
+            className="flex items-center gap-2"
+          >
+            <LogIn className="h-4 w-4" />
+            Sign In
+          </Button>
+        </div>
+
+
+        <p className="text-muted-foreground text-lg max-w-3xl">
           Explore techniques, track your progress, and study smarter.
         </p>
       </section>
@@ -69,7 +85,7 @@ export default function Home() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-semibold">Your Techniques</h2>
-          <Button>
+          <Button variant="secondary">
             <PlusCircle className="mr-2 h-4 w-4" /> Add Technique
           </Button>
         </div>
@@ -86,7 +102,9 @@ export default function Home() {
         {/* EMPTY STATE */}
         {!loading && techniques.length === 0 && (
           <Card className="p-6 text-center">
-            <p className="text-muted-foreground">No techniques added yet.</p>
+            <p className="text-muted-foreground">
+              No techniques added yet.
+            </p>
           </Card>
         )}
 
